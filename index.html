@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>UTMJ 100K — Plan 20 semaines</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { background: #07090c; color: #c9d1d9; font-family: Georgia, 'Times New Roman', serif; min-height: 100vh; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* HERO */
+  .hero { background: linear-gradient(150deg,#0d1117 0%,#07090c 65%); border-bottom: 1px solid #161b22; padding: 1.75rem 1.25rem 1.25rem; position: relative; overflow: hidden; }
+  .hero-glow { position: absolute; top: -30px; right: -30px; width: 200px; height: 200px; background: radial-gradient(circle,rgba(192,132,252,.07) 0%,transparent 70%); pointer-events: none; }
+  .hero-inner { max-width: 760px; margin: 0 auto; }
+  .hero-label { font-size: 0.6rem; letter-spacing: 0.3em; color: #c084fc; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .hero h1 { font-size: clamp(1.6rem,5vw,2.4rem); font-weight: normal; color: #f0f6fc; line-height: 1.1; }
+  .hero-sub { margin-top: 0.4rem; font-size: 0.78rem; color: #484f58; }
+  .hero-stats { display: flex; gap: 1.25rem; margin-top: 1rem; flex-wrap: wrap; }
+  .hero-stat-val { font-size: 0.88rem; color: #c084fc; }
+  .hero-stat-lbl { font-size: 0.58rem; color: #484f58; letter-spacing: 0.05em; }
+
+  /* TABS */
+  .tabs { background: #07090c; border-bottom: 1px solid #161b22; position: sticky; top: 0; z-index: 30; }
+  .tabs-inner { max-width: 760px; margin: 0 auto; display: flex; }
+  .tab-btn { background: none; border: none; padding: 0.8rem 1rem; font-size: 0.78rem; letter-spacing: 0.06em; transition: color .2s; border-bottom: 2px solid transparent; }
+  .tab-btn.active { color: #c084fc; border-bottom-color: #c084fc; }
+  .tab-btn:not(.active) { color: #484f58; }
+
+  /* CONTENT */
+  .content { max-width: 760px; margin: 0 auto; padding: 1.25rem 1rem 5rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* CHART */
+  .chart-box { background: #0d1117; border: 1px solid #161b22; border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem; }
+  .chart-label { font-size: 0.62rem; color: #484f58; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 2px; height: 52px; }
+  .chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 2px; }
+  .chart-bar { width: 100%; border-radius: 2px 2px 0 0; transition: opacity .15s; }
+  .chart-bar-lbl { font-size: 0.48px; color: #30363d; }
+
+  /* PHASE PILLS */
+  .phase-pills { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .phase-pill { border-radius: 20px; padding: 0.3rem 0.7rem; font-size: 0.72rem; border: 1px solid; transition: all .2s; }
+
+  /* WEEK SELECTOR */
+  .week-selector { display: flex; gap: 0.3rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.25rem; -webkit-overflow-scrolling: touch; }
+  .week-btn { flex-shrink: 0; border-radius: 6px; padding: 0.35rem 0.6rem; font-size: 0.7rem; border: 1px solid; transition: all .15s; }
+
+  /* WEEK HEADER */
+  .week-header { border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 1rem; border: 1px solid; }
+  .week-header-inner { display: flex; justify-content: space-between; align-items: flex-start; }
+  .week-phase-lbl { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .week-name { font-size: 0.9rem; color: #e6edf3; margin-top: 0.2rem; }
+  .week-vol { font-size: 1rem; text-align: right; }
+  .week-dplus { font-size: 0.65rem; color: #484f58; }
+
+  /* SESSIONS */
+  .sessions { display: flex; flex-direction: column; gap: 0.35rem; }
+  .session { border-radius: 8px; overflow: hidden; border: 1px solid #161b22; transition: all .15s; }
+  .session.open { border-color: var(--phase-border); }
+  .session-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.9rem; }
+  .session-day { font-size: 0.65rem; color: #30363d; width: 28px; flex-shrink: 0; font-family: monospace; }
+  .session-icon { font-size: 0.88rem; width: 16px; text-align: center; flex-shrink: 0; }
+  .session-info { flex: 1; }
+  .session-title { font-size: 0.84rem; }
+  .session-meta { font-size: 0.67rem; color: #484f58; margin-top: 2px; }
+  .session-renfo-tag { font-size: 0.67rem; color: #fb7185; margin-top: 2px; }
+  .session-arrow { font-size: 0.55rem; color: #30363d; }
+  .session-detail { padding: 0 0.9rem 0.85rem 3.2rem; border-top: 1px solid #161b22; }
+  .session-detail p { margin-top: 0.6rem; font-size: 0.8rem; color: #6e7681; line-height: 1.65; }
+
+  /* RENFO BLOCK */
+  .renfo-block { margin-top: 0.75rem; background: #1f0a0e; border: 1px solid #4c0519; border-radius: 8px; padding: 0.7rem 0.8rem; }
+  .renfo-block-title { font-size: 0.65rem; color: #fb7185; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .renfo-ex-row { display: flex; gap: 0.5rem; margin-bottom: 0.4rem; }
+  .renfo-ex-row:last-child { margin-bottom: 0; }
+  .renfo-ex-name { font-size: 0.75rem; color: #e6edf3; flex: 1; }
+  .renfo-ex-sets { font-size: 0.7rem; color: #fb7185; flex-shrink: 0; }
+  .renfo-notes { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #4c0519; }
+  .renfo-note { font-size: 0.67rem; color: #6e7681; line-height: 1.5; }
+
+  /* RENFO TAB */
+  .renfo-intro { background: #0d1117; border: 1px solid #21262d; border-radius: 10px; padding: 0.9rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #6e7681; line-height: 1.7; }
+  .renfo-intro strong { color: #e6edf3; display: block; margin-bottom: 0.3rem; }
+  .renfo-card { background: #090d12; border: 1px solid #161b22; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; cursor: pointer; }
+  .renfo-card.open { border-color: #4c0519; }
+  .renfo-card-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; }
+  .renfo-card-bar { width: 4px; height: 36px; border-radius: 4px; flex-shrink: 0; }
+  .renfo-card-info { flex: 1; }
+  .renfo-card-name { font-size: 0.88rem; color: #e6edf3; }
+  .renfo-card-meta { font-size: 0.68rem; color: #484f58; margin-top: 2px; }
+  .renfo-card-body { padding: 0 1rem 1rem; border-top: 1px solid #161b22; }
+  .renfo-card-ex { padding: 0.55rem 0; border-bottom: 1px solid #161b22; }
+  .renfo-card-ex:last-child { border-bottom: none; }
+  .renfo-card-ex-row { display: flex; justify-content: space-between; gap: 0.5rem; }
+  .renfo-card-ex-name { font-size: 0.82rem; color: #e6edf3; }
+  .renfo-card-ex-sets { font-size: 0.75rem; flex-shrink: 0; }
+  .renfo-card-ex-note { font-size: 0.7rem; color: #484f58; margin-top: 0.15rem; }
+  .renfo-progress { margin-top: 1rem; background: #1a0533; border: 1px solid #7e22ce; border-radius: 10px; padding: 1rem; font-size: 0.8rem; color: #6e7681; line-height: 1.7; }
+  .renfo-progress strong { color: #d8b4fe; display: block; margin-bottom: 0.3rem; }
+
+  /* ZONES TAB */
+  .zone-card { background: #090d12; border: 1px solid #161b22; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.4rem; display: flex; gap: 0.85rem; }
+  .zone-bar { width: 4px; border-radius: 4px; flex-shrink: 0; }
+  .zone-header { display: flex; gap: 0.6rem; align-items: baseline; }
+  .zone-id { font-size: 0.7rem; color: #30363d; font-family: monospace; }
+  .zone-name { font-size: 0.88rem; color: #e6edf3; }
+  .zone-range { font-size: 0.72rem; }
+  .zone-desc { margin-top: 0.2rem; font-size: 0.76rem; color: #484f58; line-height: 1.55; }
+  .zone-warning { margin-top: 1rem; background: #1c0a00; border: 1px solid #9a3412; border-radius: 10px; padding: 1rem; }
+  .zone-warning-lbl { font-size: 0.65rem; color: #f97316; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .zone-warning p { font-size: 0.78rem; color: #6e7681; line-height: 1.65; }
+  .zone-rule { margin-top: 0.75rem; background: #022c22; border: 1px solid #065f46; border-radius: 10px; padding: 1rem; }
+  .zone-rule-lbl { font-size: 0.65rem; color: #34d399; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .zone-rule p { font-size: 0.78rem; color: #6e7681; line-height: 1.65; }
+
+  /* INFO BOX */
+  .info-header { font-size: 0.62rem; color: #484f58; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-label">UTMJ 100 km · 20 semaines · Post-Ventoux</div>
+    <h1>Planning jour par jour</h1>
+    <p class="hero-sub">Menton / Monaco · FCmax 204 bpm · Renfo intégré</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">87K Ventoux</div><div class="hero-stat-lbl">référence</div></div>
+      <div><div class="hero-stat-val">14h59</div><div class="hero-stat-lbl">temps Ventoux</div></div>
+      <div><div class="hero-stat-val">18–21h</div><div class="hero-stat-lbl">objectif UTMJ</div></div>
+      <div><div class="hero-stat-val">4j/sem</div><div class="hero-stat-lbl">pic charge</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="switchTab('plan')">Planning</button>
+    <button class="tab-btn" onclick="switchTab('renfo')">Renfo</button>
+    <button class="tab-btn" onclick="switchTab('zones')">Zones FC</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ══════════ PLAN ══════════ -->
+  <div id="tab-plan" class="tab-panel active">
+    <div class="chart-box">
+      <div class="chart-label">Volume hebdo — km</div>
+      <div class="chart-bars" id="chart-bars"></div>
+    </div>
+    <div class="phase-pills" id="phase-pills"></div>
+    <div class="week-selector" id="week-selector"></div>
+    <div class="week-header" id="week-header"></div>
+    <div class="sessions" id="sessions"></div>
+  </div>
+
+  <!-- ══════════ RENFO ══════════ -->
+  <div id="tab-renfo" class="tab-panel">
+    <div class="info-header">4 circuits — 1 par semaine, en rotation</div>
+    <div class="renfo-intro">
+      <strong>Logique du renfo trail</strong>
+      Le renforcement sur un ultra, c'est la prévention blessure autant que la performance. Les 4 circuits tournent sur les axes prioritaires : descente (quadris excentriques), stabilité cheville (proprio), gainage (posture sur 20h de course), et bases (fessiers, ischios). Chaque circuit prend 20–25 min et se fait après une séance légère ou en jour de repos actif.
+    </div>
+    <div id="renfo-cards"></div>
+    <div class="renfo-progress">
+      <strong>Progression sur 20 semaines</strong>
+      <div>S1–S4 (récup) : circuits légers, amplitude réduite</div>
+      <div>S5–S10 (base) : charges progressives, 3 séries → 4</div>
+      <div>S11–S16 (spécifique) : Circuit D prioritaire, excentriques +</div>
+      <div>S17–S18 (pic) : maintien, pas de nouvelle charge</div>
+      <div>S19–S20 (affût) : arrêt renfo</div>
+    </div>
+  </div>
+
+  <!-- ══════════ ZONES ══════════ -->
+  <div id="tab-zones" class="tab-panel">
+    <div class="info-header">FCmax 204 bpm</div>
+    <div id="zone-cards"></div>
+    <div class="zone-warning">
+      <div class="zone-warning-lbl">⚠ Correction trajets Monaco</div>
+      <p>Tes footings plats tournaient à <strong style="color:#fbbf24">143–145 bpm</strong> = Z3 avec ta FCmax de 204. Cible Z2 réelle : <strong style="color:#34d399">130–138 bpm</strong> → ~6:15–6:35/km sur le plat. Les premières semaines tu vas te sentir lent. C'est normal. L'allure Z2 va progresser naturellement en 6–8 semaines.</p>
+    </div>
+    <div class="zone-rule">
+      <div class="zone-rule-lbl">Règle 80/20 — UTMJ</div>
+      <p><strong style="color:#6ee7b7">80% volume en Z1-Z2</strong> · <strong style="color:#fcd34d">15% en Z3-Z4</strong> · <strong style="color:#fca5a5">5% en Z5</strong><br><br>Sur 100 km, tu courras 90% du temps en Z2-Z3. Les 20 semaines de plan sont calibrées pour que ce soit confortable, pas subi.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const DAYS = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+
+const TYPE_META = {
+  repos:   { icon:"·", color:"#374151", bg:"#111318", label:"Repos" },
+  z1z2:    { icon:"~", color:"#34d399", bg:"#022c22", label:"Endurance Z2" },
+  commute: { icon:"→", color:"#60a5fa", bg:"#0a1628", label:"Trajet Monaco" },
+  cotes:   { icon:"↑", color:"#f97316", bg:"#1c0a00", label:"Fractionné côtes" },
+  tempo:   { icon:"◈", color:"#fbbf24", bg:"#1a1200", label:"Tempo / seuil" },
+  long:    { icon:"⛰", color:"#c084fc", bg:"#1a0533", label:"Sortie longue" },
+  renfo:   { icon:"◉", color:"#fb7185", bg:"#1f0a0e", label:"Renforcement" },
+  decras:  { icon:"↓", color:"#94a3b8", bg:"#0f1117", label:"Décrassage Z1" },
+};
+
+const RENFO_CIRCUITS = {
+  base: { label:"Circuit A — Bases", color:"#34d399", duration:"25 min", exercises:[
+    {name:"Squat bulgare",sets:"3×10/jambe",note:"Contrôle excentrique 3 sec"},
+    {name:"Fente avant marchée",sets:"3×12/jambe",note:"Buste droit"},
+    {name:"Pont fessier unilatéral",sets:"3×15/jambe",note:"Gainage bassin"},
+    {name:"Mollets excentrique (step)",sets:"3×15",note:"Descente lente 4 sec"},
+    {name:"Gainage frontal",sets:"3×45 sec",note:"Dos plat, respiration"},
+    {name:"Gainage latéral",sets:"3×30 sec/côté",note:""},
+  ]},
+  proprioception: { label:"Circuit B — Proprio & Chevilles", color:"#60a5fa", duration:"20 min", exercises:[
+    {name:"Équilibre unipodal (yeux fermés)",sets:"3×45 sec/jambe",note:"Sur surface instable si possible"},
+    {name:"Squat unipodal",sets:"3×8/jambe",note:"Genou dans l'axe"},
+    {name:"Saut latéral unipodal",sets:"3×10/jambe",note:"Réception contrôlée"},
+    {name:"Step-up rapide",sets:"3×12/jambe",note:"Simule montée trail"},
+    {name:"Alphabets cheville",sets:"2×/jambe",note:"Tracer lettres avec pied"},
+    {name:"Deadlift unilatéral",sets:"3×10/jambe",note:"Ischios et stabilité"},
+  ]},
+  core: { label:"Circuit C — Core & Posture", color:"#fbbf24", duration:"20 min", exercises:[
+    {name:"Dead bug",sets:"3×10/côté",note:"Lombaires au sol"},
+    {name:"Bird dog",sets:"3×12/côté",note:"Extension contrôlée"},
+    {name:"Gainage dynamique (mountain climbers)",sets:"3×20",note:"Lent et contrôlé"},
+    {name:"Romanian deadlift (haltères)",sets:"3×12",note:"Ischios, posture trail"},
+    {name:"Superman",sets:"3×15",note:"Extension dorsale"},
+    {name:"Rotation thoracique",sets:"2×10/côté",note:"Mobilité, anti-crampes"},
+  ]},
+  descente: { label:"Circuit D — Descente & Quadris", color:"#f97316", duration:"25 min", exercises:[
+    {name:"Squat excentrique lent",sets:"4×8",note:"Descente 5 sec — protection genoux"},
+    {name:"Fente arrière avec bascule",sets:"3×10/jambe",note:"Charge excentrique"},
+    {name:"Step-down (marche)",sets:"3×12/jambe",note:"Genou stable, descente lente"},
+    {name:"Nordic curl (si possible)",sets:"3×6",note:"Ischio-jambiers — prévention"},
+    {name:"Calf raises excentrique",sets:"4×15",note:"Tendon d'Achille"},
+    {name:"Gainage latéral dynamique",sets:"3×12/côté",note:"Abducteurs, stabilité genou"},
+  ]},
+};
+
+const PHASES = [
+  {id:0,label:"Récup",weeks:"S1–S4",color:"#60a5fa",border:"#1e3a5f",bg:"#0a1628"},
+  {id:1,label:"Base",weeks:"S5–S10",color:"#34d399",border:"#065f46",bg:"#022c22"},
+  {id:2,label:"Spécifique",weeks:"S11–S16",color:"#f97316",border:"#9a3412",bg:"#1c0a00"},
+  {id:3,label:"Pic & Affût.",weeks:"S17–S20",color:"#c084fc",border:"#7e22ce",bg:"#1a0533"},
+];
+
+const PHASE_COLORS = ["#60a5fa","#60a5fa","#60a5fa","#60a5fa","#34d399","#34d399","#34d399","#34d399","#34d399","#34d399","#f97316","#f97316","#f97316","#f97316","#f97316","#f97316","#c084fc","#c084fc","#c084fc","#c084fc"];
+
+const ms = (type,km,dplus,label,detail,renfo) => ({type,km,dplus,label,detail,renfo});
+const R = ms("repos",0,0,"Repos","Récupération complète. Sommeil, mobilité douce.");
+const mr = (circuit,extra) => ms("renfo",0,0,"Renforcement",extra||"",circuit);
+
+const weeks = [
+  {phase:0,w:1,vol:28,dplus:400,label:"Récup post-Ventoux — semaine en cours",sessions:[
+    ms("z1z2",5,30,"Footing léger","Bord de mer uniquement. Z1 strict < 125 bpm. Marcher si FC monte."),
+    ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Allure très lente, < 138 bpm. Prioriser la récup."),
+    mr("base","Circuit A léger. Amplitude réduite, pas de charge. 20 min max."),
+    R,
+    ms("commute",12,150,"Retour Monaco","CHPG → Menton. Z1. Si fatigue : prendre les transports sans hésiter."),
+    ms("z1z2",6,30,"Footing récup","6 km plat, bord de mer ou promenade. Jambes libres."),
+    R,
+  ]},
+  {phase:0,w:2,vol:36,dplus:500,label:"Récup — introduction trajet Z2 cadré",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Viser 130–138 bpm. Ralentir à 6:20/km si besoin."),
+    mr("core","Circuit C. Core et posture. 20 min."),
+    ms("z1z2",6,40,"Footing Z2","6 km terrain plat. FC cible : 128–138 bpm. Contrôler par montre."),
+    ms("commute",12,150,"Retour Monaco","CHPG → Menton. Z1-Z2. Aucune pression."),
+    ms("z1z2",10,100,"Sortie longue courte","10 km / 100 m D+. Cap Martin ou bord de mer. Z2 intégral."),
+    R,
+  ]},
+  {phase:0,w:3,vol:41,dplus:700,label:"Récup — première montée légère",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Z2 strict."),
+    mr("proprioception","Circuit B. Chevilles et proprio. Important post-ultra."),
+    ms("z1z2",7,120,"Footing vallonné","7 km avec un peu de D+. Gorbio départ ou Roquebrune. Z2."),
+    ms("commute",12,150,"Retour Monaco","CHPG → Menton. Récup."),
+    ms("z1z2",12,300,"Sortie montagne légère","12 km / 300 m D+. Gorbio aller-retour ou Castellar bas. Z2 intégral, marcher les montées si FC > 140."),
+    R,
+  ]},
+  {phase:0,w:4,vol:44,dplus:900,label:"Récup — fin de phase, bilan",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Z2. Les jambes devraient mieux répondre."),
+    mr("base","Circuit A. Un peu plus de charge que S1. Contrôle excentrique."),
+    ms("z1z2",8,120,"Footing Z2","8 km vallonné. Montée de la Mortola ou Col du Berceau bas. Z2."),
+    ms("commute",12,150,"Retour Monaco","CHPG → Menton."),
+    ms("z1z2",14,400,"Sortie longue fin récup","14 km / 400 m D+. Menton → Col de Castillon (bas) → retour. Z2. Bilan : comment tu te sens ?"),
+    R,
+  ]},
+  {phase:1,w:5,vol:46,dplus:1000,label:"Base aérobie — reprise structure",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2 cadré. Objectif : tenir 130–138 bpm sur tout le trajet."),
+    mr("descente","Circuit D. Quadris et descente — priorité pour l'UTMJ."),
+    ms("z1z2",8,200,"Footing vallonné","8 km / 200 m D+. Castellar ou route de Gorbio. Z2."),
+    ms("commute",12,150,"Retour Monaco","CHPG → Menton. Z1-Z2."),
+    ms("long",16,500,"Sortie longue","16 km / 500 m D+. Col de Castillon aller-retour depuis Menton. Z2. Ravitaillement à 8 km."),
+    ms("decras",5,50,"Décrassage","5 km bord de mer, Z1. Jambes qui se remettent."),
+  ]},
+  {phase:1,w:6,vol:50,dplus:1200,label:"Base aérobie — montée volume",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2. Tenter de tenir < 138 bpm sans regarder l'allure."),
+    mr("core","Circuit C. Core trail. 20 min."),
+    ms("z1z2",10,300,"Footing D+","10 km / 300 m D+. Route de Gorbio aller-retour. Z2."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",18,700,"Sortie longue","18 km / 700 m D+. Gorbio → Col du Berceau → retour Menton. Z2. Marcher les raidillons."),
+    ms("decras",5,0,"Décrassage","5 km plat, Z1."),
+  ]},
+  {phase:1,w:7,vol:34,dplus:600,label:"Base aérobie — semaine allégée",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2. Semaine légère, profiter pour courir relâché."),
+    mr("proprioception","Circuit B. Chevilles, équilibre. 20 min."),
+    ms("z1z2",6,120,"Footing court","6 km léger. Z1-Z2. Pas de pression."),
+    R,
+    ms("z1z2",12,300,"Sortie courte montagne","12 km / 300 m D+. Circuit plaisant, pas de performance. Z2."),
+    ms("decras",4,0,"Décrassage","4 km, bord de mer."),
+  ]},
+  {phase:1,w:8,vol:54,dplus:1400,label:"Base aérobie — 1re séance qualité",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",10,400,"Fractionné côtes","Écha 2 km. 5×2 min Z4 en montée (récup descente trot). Retour 2 km. Castellar ou montée Mortola."),
+    mr("base","Circuit A post-qualité. 25 min."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2. Récup après la séance dure d'hier."),
+    ms("long",20,900,"Sortie longue","20 km / 900 m D+. Menton → Sainte-Agnès → retour par Gorbio. Z2. Gel à 1h et 1h45."),
+    ms("decras",5,0,"Décrassage","5 km Z1."),
+  ]},
+  {phase:1,w:9,vol:58,dplus:1700,label:"Base aérobie — montée en puissance",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",11,500,"Fractionné côtes +","Écha 2 km. 6×2 min Z4 en montée. Récup descente trot. Retour 2 km. Même secteur."),
+    mr("descente","Circuit D. Quadris excentriques. Prioritaire avant les gros D+."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",22,1100,"Sortie longue","22 km / 1100 m D+. Menton → Gorbio → Col du Berceau → Peille (bas) → retour. Z2. Ravitaillement toutes 45 min."),
+    ms("decras",6,0,"Décrassage","6 km Z1 bord de mer."),
+  ]},
+  {phase:1,w:10,vol:37,dplus:700,label:"Base aérobie — allégée transition",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2. Semaine allégée, on relâche."),
+    mr("core","Circuit C. 20 min."),
+    ms("z1z2",7,120,"Footing","7 km Z2, terrain vallonné."),
+    R,
+    ms("z1z2",14,400,"Sortie courte","14 km / 400 m D+. Sortie plaisir, Z2. Pas de perf."),
+    R,
+  ]},
+  {phase:2,w:11,vol:61,dplus:2000,label:"Spécifique — entrée phase D+",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",12,600,"Côtes longues","Écha 2 km. 4×4 min Z4 en montée. Récup 3 min trot. 2 km retour. Col du Berceau ou Castellar."),
+    mr("descente","Circuit D. Quadris. Indispensable pour gérer les 4000 m D+ de l'UTMJ."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",24,1400,"Sortie longue montagne","24 km / 1400 m D+. Sospel → Peïra-Cava ou Peille → Mont Agel. Ravitaillement autonome. Z2."),
+    ms("decras",6,0,"Décrassage","6 km Z1."),
+  ]},
+  {phase:2,w:12,vol:65,dplus:2300,label:"Spécifique — 1er back-to-back",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("tempo",11,300,"Séance tempo","Écha 2 km. 3×8 min Z3-Z4 sur terrain vallonné. Récup 3 min. Retour 2 km. Route de Gorbio."),
+    mr("proprioception","Circuit B. Chevilles +++. Terrain technique qui arrive."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",26,1600,"LONG — back-to-back J1","26 km / 1600 m D+. Menton → Sainte-Agnès → Col du Berceau → Gorbio → Menton. Z2. Gel toutes 45 min."),
+    ms("decras",10,200,"Back-to-back J2","10 km / 200 m D+. Z1 uniquement. Marcher les montées. Objectif : courir sur jambes fatiguées."),
+  ]},
+  {phase:2,w:13,vol:42,dplus:950,label:"Spécifique — allégée post back-to-back",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z1-Z2. Semaine récup."),
+    mr("base","Circuit A léger. Corps qui reconstruit."),
+    ms("z1z2",6,100,"Footing léger","6 km Z2. Plat ou quasi-plat."),
+    R,
+    ms("z1z2",16,500,"Sortie légère","16 km / 500 m D+. Plaisir. Pas de perf. Z2."),
+    ms("decras",4,0,"Décrassage","4 km Z1."),
+  ]},
+  {phase:2,w:14,vol:68,dplus:2500,label:"Spécifique — test équipement",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",12,700,"Côtes longues +","Écha 2 km. 5×4 min Z4 montée. Récup descente trot. Retour 2 km."),
+    mr("descente","Circuit D. Quadris excentriques. 4 séries maintenant."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",28,1800,"TEST ÉQUIPEMENT","28 km / 1800 m D+. Sac UTMJ complet (veste, bâtons, nutrition course). Chronométrer. Sospel → Peïra-Cava ou Mercantour côté sud."),
+    ms("decras",8,100,"Récup active","8 km Z1. Bilan équipement : quels ajustements ?"),
+  ]},
+  {phase:2,w:15,vol:71,dplus:2800,label:"Spécifique — back-to-back costaud",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("tempo",12,400,"Séance tempo","Écha 2 km. 3×10 min Z3 soutenu. Récup 3 min. Retour 2 km. Terrain vallonné."),
+    mr("core","Circuit C. Core. 20 min."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",30,2000,"LONG — back-to-back J1","30 km / 2000 m D+. Sortie montagne engagement. Ravitaillement autonome toutes 40 min. Z2 intégral."),
+    ms("decras",12,200,"Back-to-back J2","12 km / 200 m D+. Z1-Z2. Courir sur jambes lourdes — c'est l'objectif."),
+  ]},
+  {phase:2,w:16,vol:42,dplus:1050,label:"Spécifique — allégée transition",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z1-Z2. Relâché."),
+    mr("proprioception","Circuit B. Chevilles. Maintien."),
+    ms("z1z2",8,200,"Footing","8 km Z2."),
+    R,
+    ms("z1z2",16,600,"Sortie plaisir","16 km / 600 m D+. Sortie plaisir. Aucune pression."),
+    ms("decras",4,0,"Décrassage","4 km Z1."),
+  ]},
+  {phase:3,w:17,vol:62,dplus:2600,label:"Pic — sortie clef simulation course",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",10,500,"Côtes courtes vives","Écha 2 km. 6×2 min Z4-Z5. Récup descente. Retour 2 km. Dernier gros fractionné."),
+    mr("descente","Circuit D. Dernière séance charge. Après : maintenance seulement."),
+    R,
+    ms("long",35,2300,"SORTIE CLEF — simulation","35 km / 2300 m D+. Départ 5h du matin. Sac UTMJ complet. Nutrition course. Bâtons. Chronométrer chaque heure. Gros circuit Mercantour."),
+    ms("decras",6,0,"Récup post-clef","6 km Z1. Bord de mer. Bilan physique et mental."),
+  ]},
+  {phase:3,w:18,vol:46,dplus:1150,label:"Affûtage S1 — réduction nette",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z2."),
+    ms("cotes",8,300,"Côtes courtes maintien","Écha 2 km. 4×2 min Z4. Récup descente. Retour 2 km. Garder les jambes vives."),
+    mr("core","Circuit C léger. 15 min. Maintenance uniquement."),
+    ms("commute",12,150,"Retour Monaco","Z1-Z2."),
+    ms("long",20,800,"Sortie longue réduite","20 km / 800 m D+. Z2. Finir avec de la réserve."),
+    R,
+  ]},
+  {phase:3,w:19,vol:26,dplus:500,label:"Affûtage S2 — très léger",sessions:[
+    R,
+    ms("commute",12,150,"Trajet Monaco","Z1-Z2. Lent. Profiter."),
+    ms("z1z2",6,100,"Footing + accélérations","5 km Z2 puis 4×30 sec accélérations sur le plat. Garder le tonus musculaire."),
+    R,
+    ms("decras",5,0,"Footing léger","5 km Z1. Bord de mer."),
+    ms("z1z2",5,100,"Sortie courte","5 km / 100 m D+. Très léger. Bonne humeur prioritaire."),
+    R,
+  ]},
+  {phase:3,w:20,vol:10,dplus:50,label:"Semaine course — repos & préparation",sessions:[
+    ms("decras",6,30,"Footing léger","6 km Z1. Quelques accélérations finales 20 sec. Dernière sortie sérieuse."),
+    ms("decras",4,20,"Trot final","4 km très léger. Jambes en éveil."),
+    R,R,R,R,
+    ms("long",0,0,"🏔 UTMJ 100 KM","Jour de course. Tout le travail est fait. Courir malin : Z2 les 40 premiers km, gestion ravitaillements < 5 min, bâtons sur les gros D+."),
+  ]},
+];
+
+const ZONES = [
+  {z:"Z1",label:"Récup",range:"< 122 bpm",color:"#60a5fa",desc:"Trot ou marche. Conversation fluide. Trajets récupération, décrassage."},
+  {z:"Z2",label:"Endurance",range:"122–142 bpm",color:"#34d399",desc:"Base de tout. Phrases courtes possibles. 80% du volume d'entraînement ici. Trajets Monaco cible : 130–138 bpm."},
+  {z:"Z3",label:"Seuil aérobie",range:"143–163 bpm",color:"#fbbf24",desc:"Séances tempo. Quelques mots. Terrain vallonné à bonne allure."},
+  {z:"Z4",label:"Seuil lactique",range:"163–183 bpm",color:"#f97316",desc:"Fractionné côtes, répétitions. Difficile. 2–3 mots max."},
+  {z:"Z5",label:"VO2max",range:"> 183 bpm",color:"#ef4444",desc:"Pointes en fin de côtes courtes. Très court, très intense."},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let selectedWeek = 0;
+let expandedDay = null;
+let expandedRenfo = null;
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function getPhase(week) { return PHASES[week.phase]; }
+
+function renderChart() {
+  const maxVol = Math.max(...weeks.map(w => w.vol));
+  const container = document.getElementById('chart-bars');
+  container.innerHTML = '';
+  weeks.forEach((w, i) => {
+    const h = (w.vol / maxVol) * 44;
+    const isSel = i === selectedWeek;
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-bar-wrap';
+    wrap.onclick = () => { selectedWeek = i; expandedDay = null; renderPlan(); };
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = h + 'px';
+    bar.style.background = PHASE_COLORS[i];
+    bar.style.opacity = isSel ? '1' : '0.45';
+    if (isSel) bar.style.outline = `2px solid ${PHASE_COLORS[i]}`;
+    wrap.appendChild(bar);
+    if (i % 4 === 0 || i === 19) {
+      const lbl = document.createElement('div');
+      lbl.style.cssText = `font-size:0.48rem;color:${isSel?'#e6edf3':'#30363d'}`;
+      lbl.textContent = 'S'+(i+1);
+      wrap.appendChild(lbl);
+    }
+    container.appendChild(wrap);
+  });
+}
+
+function renderPhasePills() {
+  const week = weeks[selectedWeek];
+  const container = document.getElementById('phase-pills');
+  container.innerHTML = '';
+  PHASES.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'phase-pill';
+    const active = week.phase === p.id;
+    btn.style.background = active ? p.bg : '#0d1117';
+    btn.style.borderColor = active ? p.border : '#21262d';
+    btn.style.color = active ? p.color : '#484f58';
+    btn.innerHTML = p.label + ' <span style="opacity:.6">' + p.weeks + '</span>';
+    btn.onclick = () => {
+      selectedWeek = weeks.findIndex(w => w.phase === p.id);
+      expandedDay = null;
+      renderPlan();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function renderWeekSelector() {
+  const week = weeks[selectedWeek];
+  const phase = getPhase(week);
+  const container = document.getElementById('week-selector');
+  container.innerHTML = '';
+  weeks.forEach((w, idx) => {
+    if (w.phase !== week.phase) return;
+    const btn = document.createElement('button');
+    btn.className = 'week-btn';
+    const isSel = idx === selectedWeek;
+    btn.style.background = isSel ? phase.bg : '#0d1117';
+    btn.style.borderColor = isSel ? phase.border : '#21262d';
+    btn.style.color = isSel ? phase.color : '#30363d';
+    btn.textContent = 'S' + (idx + 1);
+    btn.onclick = () => { selectedWeek = idx; expandedDay = null; renderPlan(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderWeekHeader() {
+  const week = weeks[selectedWeek];
+  const phase = getPhase(week);
+  const el = document.getElementById('week-header');
+  el.style.background = phase.bg;
+  el.style.borderColor = phase.border;
+  el.innerHTML = `
+    <div class="week-header-inner">
+      <div>
+        <div class="week-phase-lbl" style="color:${phase.color}">${phase.label} — Semaine ${selectedWeek + 1}</div>
+        <div class="week-name">${week.label}</div>
+      </div>
+      <div>
+        <div class="week-vol" style="color:${phase.color}">${week.vol} km</div>
+        <div class="week-dplus">${week.dplus} m D+</div>
+      </div>
+    </div>`;
+}
+
+function renderSessions() {
+  const week = weeks[selectedWeek];
+  const phase = getPhase(week);
+  const container = document.getElementById('sessions');
+  container.innerHTML = '';
+
+  week.sessions.forEach((s, di) => {
+    const meta = TYPE_META[s.type];
+    const isEmpty = s.type === 'repos';
+    const isOpen = expandedDay === di;
+
+    const div = document.createElement('div');
+    div.className = 'session' + (isOpen ? ' open' : '');
+    div.style.setProperty('--phase-border', phase.border);
+    div.style.background = isOpen ? meta.bg : '#090d12';
+    if (!isEmpty) div.style.cursor = 'pointer';
+
+    let metaLine = '';
+    if (s.km > 0) metaLine += `<div class="session-meta">${meta.label}${s.km > 0 ? ' · '+s.km+' km' : ''}${s.dplus > 0 ? ' / '+s.dplus+' m D+' : ''}</div>`;
+    if (s.renfo) metaLine += `<div class="session-renfo-tag">${RENFO_CIRCUITS[s.renfo].label} · ${RENFO_CIRCUITS[s.renfo].duration}</div>`;
+
+    let detailHTML = '';
+    if (isOpen) {
+      let renfoHTML = '';
+      if (s.renfo) {
+        const rc = RENFO_CIRCUITS[s.renfo];
+        const exRows = rc.exercises.map(ex => `<div class="renfo-ex-row"><div class="renfo-ex-name">${ex.name}</div><div class="renfo-ex-sets">${ex.sets}</div></div>`).join('');
+        const noteRows = rc.exercises.filter(e=>e.note).map(ex => `<div class="renfo-note">→ ${ex.name} : ${ex.note}</div>`).join('');
+        renfoHTML = `<div class="renfo-block">
+          <div class="renfo-block-title">${rc.label} · ${rc.duration}</div>
+          ${exRows}
+          ${noteRows ? '<div class="renfo-notes">'+noteRows+'</div>' : ''}
+        </div>`;
+      }
+      detailHTML = `<div class="session-detail"><p>${s.detail}</p>${renfoHTML}</div>`;
+    }
+
+    div.innerHTML = `
+      <div class="session-row">
+        <div class="session-day">${DAYS[di]}</div>
+        <div class="session-icon" style="color:${meta.color}">${meta.icon}</div>
+        <div class="session-info">
+          <div class="session-title" style="color:${isEmpty?'#30363d':'#e6edf3'}">${s.label}</div>
+          ${metaLine}
+        </div>
+        ${!isEmpty ? '<div class="session-arrow">'+(isOpen?'▲':'▼')+'</div>' : ''}
+      </div>
+      ${detailHTML}`;
+
+    if (!isEmpty) {
+      div.onclick = () => {
+        expandedDay = expandedDay === di ? null : di;
+        renderSessions();
+      };
+    }
+    container.appendChild(div);
+  });
+}
+
+function renderPlan() {
+  renderChart();
+  renderPhasePills();
+  renderWeekSelector();
+  renderWeekHeader();
+  renderSessions();
+}
+
+function renderRenfo() {
+  const container = document.getElementById('renfo-cards');
+  container.innerHTML = '';
+  Object.entries(RENFO_CIRCUITS).forEach(([key, circuit]) => {
+    const isOpen = expandedRenfo === key;
+    const div = document.createElement('div');
+    div.className = 'renfo-card' + (isOpen ? ' open' : '');
+
+    let bodyHTML = '';
+    if (isOpen) {
+      const exHTML = circuit.exercises.map(ex => `
+        <div class="renfo-card-ex">
+          <div class="renfo-card-ex-row">
+            <div class="renfo-card-ex-name">${ex.name}</div>
+            <div class="renfo-card-ex-sets" style="color:${circuit.color}">${ex.sets}</div>
+          </div>
+          ${ex.note ? '<div class="renfo-card-ex-note">'+ex.note+'</div>' : ''}
+        </div>`).join('');
+      bodyHTML = `<div class="renfo-card-body">${exHTML}</div>`;
+    }
+
+    div.innerHTML = `
+      <div class="renfo-card-header">
+        <div class="renfo-card-bar" style="background:${circuit.color}"></div>
+        <div class="renfo-card-info">
+          <div class="renfo-card-name">${circuit.label}</div>
+          <div class="renfo-card-meta">${circuit.duration} · ${circuit.exercises.length} exercices</div>
+        </div>
+        <div style="font-size:0.55rem;color:#30363d">${isOpen?'▲':'▼'}</div>
+      </div>
+      ${bodyHTML}`;
+
+    div.onclick = () => {
+      expandedRenfo = expandedRenfo === key ? null : key;
+      renderRenfo();
+    };
+    container.appendChild(div);
+  });
+}
+
+function renderZones() {
+  const container = document.getElementById('zone-cards');
+  container.innerHTML = '';
+  ZONES.forEach(z => {
+    container.innerHTML += `
+      <div class="zone-card">
+        <div class="zone-bar" style="background:${z.color}"></div>
+        <div>
+          <div class="zone-header">
+            <span class="zone-id">${z.z}</span>
+            <span class="zone-name">${z.label}</span>
+            <span class="zone-range" style="color:${z.color}">${z.range}</span>
+          </div>
+          <p class="zone-desc">${z.desc}</p>
+        </div>
+      </div>`;
+  });
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick') === "switchTab('"+tab+"')") b.classList.add('active');
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderPlan();
+renderRenfo();
+renderZones();
+</script>
+</body>
+</html>
