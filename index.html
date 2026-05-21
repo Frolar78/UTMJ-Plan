@@ -259,7 +259,7 @@ const R = ms("repos",0,0,"Repos","Récupération complète. Sommeil, mobilité d
 const mr = (circuit,extra) => ms("renfo",0,0,"Renforcement",extra||"",circuit);
 
 const weeks = [
-  {phase:0,w:1,vol:28,dplus:400,dates:"25–31 mai",time:"~5h",label:"Récup post-Ventoux — semaine en cours",sessions:[
+  {phase:0,w:1,vol:28,dplus:400,dates:"18–24 mai",time:"~5h",label:"Récup post-Ventoux — semaine en cours",sessions:[
     ms("z1z2",5,30,"Footing léger","Bord de mer uniquement. Z1 strict < 125 bpm. Marcher si FC monte."),
     ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Allure très lente, < 138 bpm. Prioriser la récup."),
     mr("base","Circuit A léger. Amplitude réduite, pas de charge. 20 min max."),
@@ -268,7 +268,7 @@ const weeks = [
     ms("z1z2",6,30,"Footing récup","6 km plat, bord de mer ou promenade. Jambes libres."),
     R,
   ]},
-  {phase:0,w:2,vol:36,dplus:500,dates:"1–7 juin",time:"~5h30",label:"Récup — introduction trajet Z2 cadré",sessions:[
+  {phase:0,w:2,vol:36,dplus:500,dates:"25–31 mai",time:"~5h30",label:"Récup — introduction trajet Z2 cadré",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Viser 130–138 bpm. Ralentir à 6:20/km si besoin."),
     mr("core","Circuit C. Core et posture. 20 min."),
@@ -277,7 +277,7 @@ const weeks = [
     ms("z1z2",10,100,"Sortie longue courte","10 km / 100 m D+. Cap Martin ou bord de mer. Z2 intégral."),
     R,
   ]},
-  {phase:0,w:3,vol:41,dplus:700,dates:"8–14 juin",time:"~6h",label:"Récup — première montée légère",sessions:[
+  {phase:0,w:3,vol:41,dplus:700,dates:"1–7 juin",time:"~6h",label:"Récup — première montée légère",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Z2 strict."),
     mr("proprioception","Circuit B. Chevilles et proprio. Important post-ultra."),
@@ -286,7 +286,7 @@ const weeks = [
     ms("z1z2",12,300,"Sortie montagne légère","12 km / 300 m D+. Gorbio aller-retour ou Castellar bas. Z2 intégral, marcher les montées si FC > 140."),
     R,
   ]},
-  {phase:0,w:4,vol:44,dplus:900,dates:"15–21 juin",time:"~6h",label:"Récup — fin de phase, bilan",sessions:[
+  {phase:0,w:4,vol:44,dplus:900,dates:"8–14 juin",time:"~6h",label:"Récup — fin de phase, bilan",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Menton → CHPG. Z2. Les jambes devraient mieux répondre."),
     mr("base","Circuit A. Un peu plus de charge que S1. Contrôle excentrique."),
@@ -295,7 +295,7 @@ const weeks = [
     ms("z1z2",14,400,"Sortie longue fin récup","14 km / 400 m D+. Menton → Col de Castillon (bas) → retour. Z2. Bilan : comment tu te sens ?"),
     R,
   ]},
-  {phase:1,w:5,vol:46,dplus:1000,dates:"22–28 juin",time:"~6h30",label:"Base aérobie — reprise structure",sessions:[
+  {phase:1,w:5,vol:46,dplus:1000,dates:"15–21 juin",time:"~6h30",label:"Base aérobie — reprise structure",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2 cadré. Objectif : tenir 130–138 bpm sur tout le trajet."),
     mr("descente","Circuit D. Quadris et descente — priorité pour l'UTMJ."),
@@ -304,7 +304,7 @@ const weeks = [
     ms("long",16,500,"Sortie longue","16 km / 500 m D+. Col de Castillon aller-retour depuis Menton. Z2. Ravitaillement à 8 km."),
     ms("decras",5,50,"Décrassage","5 km bord de mer, Z1. Jambes qui se remettent."),
   ]},
-  {phase:1,w:6,vol:50,dplus:1200,dates:"29 juin–5 juil",time:"~7h",label:"Base aérobie — montée volume",sessions:[
+  {phase:1,w:6,vol:50,dplus:1200,dates:"22–28 juin",time:"~7h",label:"Base aérobie — montée volume",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2. Tenter de tenir < 138 bpm sans regarder l'allure."),
     mr("core","Circuit C. Core trail. 20 min."),
@@ -313,7 +313,7 @@ const weeks = [
     ms("long",18,700,"Sortie longue","18 km / 700 m D+. Gorbio → Col du Berceau → retour Menton. Z2. Marcher les raidillons."),
     ms("decras",5,0,"Décrassage","5 km plat, Z1."),
   ]},
-  {phase:1,w:7,vol:34,dplus:600,dates:"6–12 juil",time:"~5h",label:"Base aérobie — semaine allégée",sessions:[
+  {phase:1,w:7,vol:34,dplus:600,dates:"29 juin–5 juil",time:"~5h",label:"Base aérobie — semaine allégée",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2. Semaine légère, profiter pour courir relâché."),
     mr("proprioception","Circuit B. Chevilles, équilibre. 20 min."),
@@ -322,7 +322,7 @@ const weeks = [
     ms("z1z2",12,300,"Sortie courte montagne","12 km / 300 m D+. Circuit plaisant, pas de performance. Z2."),
     ms("decras",4,0,"Décrassage","4 km, bord de mer."),
   ]},
-  {phase:1,w:8,vol:54,dplus:1400,dates:"13–19 juil",time:"~7h30",label:"Base aérobie — 1re séance qualité",sessions:[
+  {phase:1,w:8,vol:54,dplus:1400,dates:"6–12 juil",time:"~7h30",label:"Base aérobie — 1re séance qualité",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",10,400,"Fractionné côtes","Écha 2 km. 5×2 min Z4 en montée (récup descente trot). Retour 2 km. Castellar ou montée Mortola."),
@@ -331,7 +331,7 @@ const weeks = [
     ms("long",20,900,"Sortie longue","20 km / 900 m D+. Menton → Sainte-Agnès → retour par Gorbio. Z2. Gel à 1h et 1h45."),
     ms("decras",5,0,"Décrassage","5 km Z1."),
   ]},
-  {phase:1,w:9,vol:58,dplus:1700,dates:"20–26 juil",time:"~8h",label:"Base aérobie — montée en puissance",sessions:[
+  {phase:1,w:9,vol:58,dplus:1700,dates:"13–19 juil",time:"~8h",label:"Base aérobie — montée en puissance",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",11,500,"Fractionné côtes +","Écha 2 km. 6×2 min Z4 en montée. Récup descente trot. Retour 2 km. Même secteur."),
@@ -340,7 +340,7 @@ const weeks = [
     ms("long",22,1100,"Sortie longue","22 km / 1100 m D+. Menton → Gorbio → Col du Berceau → Peille (bas) → retour. Z2. Ravitaillement toutes 45 min."),
     ms("decras",6,0,"Décrassage","6 km Z1 bord de mer."),
   ]},
-  {phase:1,w:10,vol:37,dplus:700,dates:"27 juil–2 août",time:"~6h",label:"Base aérobie — allégée transition",sessions:[
+  {phase:1,w:10,vol:37,dplus:700,dates:"20–26 juil",time:"~6h",label:"Base aérobie — allégée transition",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2. Semaine allégée, on relâche."),
     mr("core","Circuit C. 20 min."),
@@ -349,7 +349,7 @@ const weeks = [
     ms("z1z2",14,400,"Sortie courte","14 km / 400 m D+. Sortie plaisir, Z2. Pas de perf."),
     R,
   ]},
-  {phase:2,w:11,vol:61,dplus:2000,dates:"3–9 août",time:"~8h",label:"Spécifique — entrée phase D+",sessions:[
+  {phase:2,w:11,vol:61,dplus:2000,dates:"27 juil–2 août",time:"~8h",label:"Spécifique — entrée phase D+",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",12,600,"Côtes longues","Écha 2 km. 4×4 min Z4 en montée. Récup 3 min trot. 2 km retour. Col du Berceau ou Castellar."),
@@ -358,7 +358,7 @@ const weeks = [
     ms("long",24,1400,"Sortie longue montagne","24 km / 1400 m D+. Sospel → Peïra-Cava ou Peille → Mont Agel. Ravitaillement autonome. Z2."),
     ms("decras",6,0,"Décrassage","6 km Z1."),
   ]},
-  {phase:2,w:12,vol:65,dplus:2300,dates:"10–16 août",time:"~8h30",label:"Spécifique — 1er back-to-back",sessions:[
+  {phase:2,w:12,vol:65,dplus:2300,dates:"3–9 août",time:"~8h30",label:"Spécifique — 1er back-to-back",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("tempo",11,300,"Séance tempo","Écha 2 km. 3×8 min Z3-Z4 sur terrain vallonné. Récup 3 min. Retour 2 km. Route de Gorbio."),
@@ -367,7 +367,7 @@ const weeks = [
     ms("long",26,1600,"LONG — back-to-back J1","26 km / 1600 m D+. Menton → Sainte-Agnès → Col du Berceau → Gorbio → Menton. Z2. Gel toutes 45 min."),
     ms("decras",10,200,"Back-to-back J2","10 km / 200 m D+. Z1 uniquement. Marcher les montées. Objectif : courir sur jambes fatiguées."),
   ]},
-  {phase:2,w:13,vol:42,dplus:950,dates:"17–23 août",time:"~6h",label:"Spécifique — allégée post back-to-back",sessions:[
+  {phase:2,w:13,vol:42,dplus:950,dates:"10–16 août",time:"~6h",label:"Spécifique — allégée post back-to-back",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z1-Z2. Semaine récup."),
     mr("base","Circuit A léger. Corps qui reconstruit."),
@@ -376,7 +376,7 @@ const weeks = [
     ms("z1z2",16,500,"Sortie légère","16 km / 500 m D+. Plaisir. Pas de perf. Z2."),
     ms("decras",4,0,"Décrassage","4 km Z1."),
   ]},
-  {phase:2,w:14,vol:68,dplus:2500,dates:"24–30 août",time:"~8h30",label:"Spécifique — test équipement",sessions:[
+  {phase:2,w:14,vol:68,dplus:2500,dates:"17–23 août",time:"~8h30",label:"Spécifique — test équipement",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",12,700,"Côtes longues +","Écha 2 km. 5×4 min Z4 montée. Récup descente trot. Retour 2 km."),
@@ -385,7 +385,7 @@ const weeks = [
     ms("long",28,1800,"TEST ÉQUIPEMENT","28 km / 1800 m D+. Sac UTMJ complet (veste, bâtons, nutrition course). Chronométrer. Sospel → Peïra-Cava ou Mercantour côté sud."),
     ms("decras",8,100,"Récup active","8 km Z1. Bilan équipement : quels ajustements ?"),
   ]},
-  {phase:2,w:15,vol:71,dplus:2800,dates:"31 août–6 sept",time:"~8h",label:"Spécifique — back-to-back costaud",sessions:[
+  {phase:2,w:15,vol:71,dplus:2800,dates:"24–30 août",time:"~8h",label:"Spécifique — back-to-back costaud",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("tempo",12,400,"Séance tempo","Écha 2 km. 3×10 min Z3 soutenu. Récup 3 min. Retour 2 km. Terrain vallonné."),
@@ -394,7 +394,7 @@ const weeks = [
     ms("long",30,2000,"LONG — back-to-back J1","30 km / 2000 m D+. Sortie montagne engagement. Ravitaillement autonome toutes 40 min. Z2 intégral."),
     ms("decras",12,200,"Back-to-back J2","12 km / 200 m D+. Z1-Z2. Courir sur jambes lourdes — c'est l'objectif."),
   ]},
-  {phase:2,w:16,vol:42,dplus:1050,dates:"7–13 sept",time:"~6h",label:"Spécifique — allégée transition",sessions:[
+  {phase:2,w:16,vol:42,dplus:1050,dates:"31 août–6 sept",time:"~6h",label:"Spécifique — allégée transition",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z1-Z2. Relâché."),
     mr("proprioception","Circuit B. Chevilles. Maintien."),
@@ -403,7 +403,7 @@ const weeks = [
     ms("z1z2",16,600,"Sortie plaisir","16 km / 600 m D+. Sortie plaisir. Aucune pression."),
     ms("decras",4,0,"Décrassage","4 km Z1."),
   ]},
-  {phase:3,w:17,vol:62,dplus:2600,dates:"14–20 sept",time:"~8h",label:"Pic — sortie clef simulation course",sessions:[
+  {phase:3,w:17,vol:62,dplus:2600,dates:"7–13 sept",time:"~8h",label:"Pic — sortie clef simulation course",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",10,500,"Côtes courtes vives","Écha 2 km. 6×2 min Z4-Z5. Récup descente. Retour 2 km. Dernier gros fractionné."),
@@ -412,7 +412,7 @@ const weeks = [
     ms("long",35,2300,"SORTIE CLEF — simulation","35 km / 2300 m D+. Départ 5h du matin. Sac UTMJ complet. Nutrition course. Bâtons. Chronométrer chaque heure. Gros circuit Mercantour."),
     ms("decras",6,0,"Récup post-clef","6 km Z1. Bord de mer. Bilan physique et mental."),
   ]},
-  {phase:3,w:18,vol:46,dplus:1150,dates:"21–27 sept",time:"~7h",label:"Affûtage S1 — réduction nette",sessions:[
+  {phase:3,w:18,vol:46,dplus:1150,dates:"14–20 sept",time:"~7h",label:"Affûtage S1 — réduction nette",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z2."),
     ms("cotes",8,300,"Côtes courtes maintien","Écha 2 km. 4×2 min Z4. Récup descente. Retour 2 km. Garder les jambes vives."),
@@ -421,7 +421,7 @@ const weeks = [
     ms("long",20,800,"Sortie longue réduite","20 km / 800 m D+. Z2. Finir avec de la réserve."),
     R,
   ]},
-  {phase:3,w:19,vol:26,dplus:500,dates:"28 sept–4 oct",time:"~5h",label:"Affûtage S2 — très léger",sessions:[
+  {phase:3,w:19,vol:26,dplus:500,dates:"21–27 sept",time:"~5h",label:"Affûtage S2 — très léger",sessions:[
     R,
     ms("commute",12,150,"Trajet Monaco","Z1-Z2. Lent. Profiter."),
     ms("z1z2",6,100,"Footing + accélérations","5 km Z2 puis 4×30 sec accélérations sur le plat. Garder le tonus musculaire."),
@@ -430,11 +430,14 @@ const weeks = [
     ms("z1z2",5,100,"Sortie courte","5 km / 100 m D+. Très léger. Bonne humeur prioritaire."),
     R,
   ]},
-  {phase:3,w:20,vol:10,dplus:50,dates:"5–11 oct 🏔",time:"~1h",label:"Semaine course — repos & préparation",sessions:[
-    ms("decras",6,30,"Footing léger","6 km Z1. Quelques accélérations finales 20 sec. Dernière sortie sérieuse."),
+  {phase:3,w:20,vol:10,dplus:50,dates:"28 sept–4 oct 🏔",time:"~1h",label:"Semaine course — repos & préparation",sessions:[
+    ms("decras",6,30,"Footing léger","6 km Z1. Quelques accélérations finales 20 sec."),
     ms("decras",4,20,"Trot final","4 km très léger. Jambes en éveil."),
-    R,R,R,R,
-    ms("long",0,0,"🏔 UTMJ 100 KM","Jour de course. Tout le travail est fait. Courir malin : Z2 les 40 premiers km, gestion ravitaillements < 5 min, bâtons sur les gros D+."),
+    R,
+    R,
+    R,
+    ms("long",0,0,"🏔 UTMJ 100 KM — Samedi 3 octobre","Jour de course. Tout le travail est fait. Courir malin : Z2 les 40 premiers km, gestion ravitaillements < 5 min, bâtons sur les gros D+."),
+    R,
   ]},
 ];
 
